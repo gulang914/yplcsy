@@ -14,4 +14,8 @@ Route::group([
 
     $router->resource('admin/fundamental','FundamentalController');
 
+    $router->resource('admin/professional','ProfessionalController');
+
+    $router->resource('admin/notice','NoticeController');
+
 });
