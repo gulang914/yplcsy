@@ -18,4 +18,6 @@ Route::group([
 
     $router->resource('admin/notice','NoticeController');
 
+    $router->resource('admin/employee','EmployeeController');
+
 });
