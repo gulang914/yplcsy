@@ -9,6 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -23,7 +24,7 @@ class EmployeeController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
+            ->header('列表')
             ->description('description')
             ->body($this->grid());
     }
@@ -38,7 +39,7 @@ class EmployeeController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
+            ->header('详情')
             ->description('description')
             ->body($this->detail($id));
     }
@@ -53,7 +54,7 @@ class EmployeeController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
+            ->header('修改')
             ->description('description')
             ->body($this->form()->edit($id));
     }
@@ -67,7 +68,7 @@ class EmployeeController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
+            ->header('创建')
             ->description('description')
             ->body($this->form());
     }
@@ -134,24 +135,27 @@ class EmployeeController extends Controller
     {
         $form = new Form(new Employee);
 
-        $form->text('industry_title', '部门名称');
+        $form->text('industry_title', '部门名称')
+            ->rules('required|max:250',[
+                'required' => '项目名称不能为空',
+                'max' => '项目名称不能超过250个字符',
+            ]);
         $form->text('employee_name', '员工姓名');
-        $form->text('ID_number', '身份证号');
-//        $form->radio($column['employee_sex', '性别'])->options(['m' => 'Female', 'f'=> 'Male'])->default('m');
-//        $form->number('employee_sex', '性别');
+        $form->text('ID_number', '身份证号')->placeholder('身份证号');
+        $form->radio('employee_sex', '性别')->options(['1' => '男', '2'=> '女'])->default('1');
         $form->date('employee_birthday', '出生日期')->default(date('Y-m-d'));
         $form->number('employee_number', '工号');
-        $form->text('employee_email', '邮箱号');
+        $form->email('employee_email', '邮箱号');
         $form->text('employee_phone', '电话号');
         $form->text('employee_mobile', '手机号');
         $form->text('employee_address', '家庭住址');
         $form->text('employee_address_now', '现住址');
         $form->number('employee_postcode', '邮编');
         $form->switch('cultivate_GCP', '是否培训过GCP');
-        $form->text('education', '学历');
-        $form->text('profession', '专业');
-        $form->text('duty', '职务');
-        $form->switch('professional_title', '职称');
+        $form->select('education', '学历')->options([1 => '博士', 2 => '硕士', 3 => '学士', 4 =>'高中', 5=>'其他']);
+        $form->text('profession', '专业')->placeholder('专业');
+        $form->text('duty', '职务')->placeholder('职务');
+        $form->text('professional_title', '职称');
 
         return $form;
     }
