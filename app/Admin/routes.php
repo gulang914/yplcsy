@@ -12,12 +12,21 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
 
-    $router->resource('admin/fundamental','FundamentalController');
+    $router->resource('fundamental','FundamentalController');
 
-    $router->resource('admin/professional','ProfessionalController');
+    $router->resource('professional','ProfessionalController');
 
-    $router->resource('admin/notice','NoticeController');
+    $router->resource('notice','NoticeController');
 
-    $router->resource('admin/employee','EmployeeController');
+    $router->resource('employee','EmployeeController');
 
+    $router->resource('test/experimentalDrug','Test\ExperimentalDrugController');
+
+    //自动创建路由
+    $res = \App\Model\Database::select('table_controller','table_route')->get();
+    if (!$res->isEmpty()){
+        foreach ($res as $k=>$v){
+            $router->resource("{$v->table_route}", "{$v->table_controller}");
+        }
+    }
 });

@@ -135,12 +135,21 @@ class EmployeeController extends Controller
     {
         $form = new Form(new Employee);
 
+        $form->row(function ($form) {
+
+            $form->text('employee_name', '员工姓名')->setWidth(4,2);
+            $form->text('ID_number', '身份证号')->setWidth(4,2);
+
+        }) ;
+
         $form->text('industry_title', '部门名称')
             ->rules('required|max:250',[
                 'required' => '项目名称不能为空',
                 'max' => '项目名称不能超过250个字符',
             ]);
-        $form->text('employee_name', '员工姓名');
+        $form->text('employee_name', '员工姓名')
+        ->setWidth(4,2);
+
         $form->text('ID_number', '身份证号')->placeholder('身份证号');
         $form->radio('employee_sex', '性别')->options(['1' => '男', '2'=> '女'])->default('1');
         $form->date('employee_birthday', '出生日期')->default(date('Y-m-d'));
