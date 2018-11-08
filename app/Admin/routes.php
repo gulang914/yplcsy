@@ -20,6 +20,8 @@ Route::group([
 
     $router->resource('employee','EmployeeController');
 
+    $router->resource('database','DatabaseController');
+
     $router->resource('test/experimentalDrug','Test\ExperimentalDrugController');
 
     //自动创建路由

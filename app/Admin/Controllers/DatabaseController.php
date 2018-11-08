@@ -80,19 +80,20 @@ class DatabaseController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Database);
-
+        $grid->disableCreateButton();
+        $grid->disableExport();
         $grid->id('Id');
-        $grid->table_name('Table name');
-        $grid->table_category('Table category');
-        $grid->table_model('Table model');
-        $grid->table_migrations('Table migrations');
-        $grid->table_controller('Table controller');
-        $grid->table_route('Table route');
-        $grid->field_type('Field type');
-        $grid->field_name('Field name');
-        $grid->table_note('Table note');
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
+        $grid->table_name('表名');
+        $grid->table_category('分类');
+        $grid->table_model('模型');
+        $grid->table_migrations('临时文件');
+        $grid->table_controller('控制器');
+        $grid->table_route('路由');
+        $grid->field_type('字段类型');
+        $grid->field_name('字段名称');
+        $grid->table_note('表注释');
+        $grid->created_at('创建时间');
+        $grid->updated_at('修改时间');
 
         return $grid;
     }
