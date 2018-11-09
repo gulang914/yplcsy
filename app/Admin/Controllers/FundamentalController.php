@@ -7,12 +7,15 @@ use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 use Encore\Admin\Show;
 
 class FundamentalController extends Controller
 {
     use HasResourceActions;
+    protected $id;
 
     /**
      * Index interface.
@@ -37,10 +40,20 @@ class FundamentalController extends Controller
      */
     public function show($id, Content $content)
     {
-        return $content
-            ->header('详情')
-            ->description('药物临床试验基本情况')
-            ->body($this->detail($id));
+        $content->header('详情');
+        $content->description('药物临床试验基本情况');
+        $content->body($this->detail($id));
+//        $content->row(function (Row $row){
+//                $show = new Show(Fundamental::findOrFail($this->id));
+//
+//                $row->column(4, $show->id('ID'));
+//                $row->column(8, function (Column $column) {
+//                    $column->row('111');
+//                    $column->row('222');
+//                    $column->row('333');
+//                });
+//            });
+        return $content;
     }
 
     /**
@@ -149,6 +162,8 @@ class FundamentalController extends Controller
     protected function detail($id)
     {
         $show = new Show(Fundamental::findOrFail($id));
+//
+//        $form->row(function($row){}
 
         $show->id('Id');
         $show->Zname('机构中文名称');
@@ -218,60 +233,63 @@ class FundamentalController extends Controller
     {
         $form = new Form(new Fundamental);
 
-        $form->text('Zname', '机构中文名称');
-        $form->text('Ename', '机构英文名称');
-        $form->text('Bname', '机构别名');
-        $form->text('shortName', '机构简称');
-        $form->text('organization_code', '机构组织代码');
-        $form->text('Affiliated_institutions', '所属机构');
-        $form->text('Institution_address_Z', '中文机构地址');
-        $form->text('Institution_address_E', '英文机构地址');
-        $form->text('province', '省份');
-        $form->text('postcode', '邮编');
-        $form->text('hospital_level', '医院等级');
-        $form->text('ownership', '所有制形式');
-        $form->text('orgniztion_type', '医疗机构类型');
-        $form->number('compiled_beds', '编制床位数');
-        $form->text('business_nature', '经营性质');
-        $form->text('statutory_representative', '法定代表人');
-        $form->text('Institutional_director', '医疗机构负责人');
-        $form->text('Job_title', '职务职称');
-        $form->text('specialty', '所学专业');
-        $form->text('office_director_name', '临床试验机构办公室主任姓名');
-        $form->text('office_director_position', '临床试验机构办公室主任职务职称');
-        $form->text('office_director_specialty', '临床试验机构办公室主任专业');
-        $form->text('office_director_phone', '临床试验机构办公室主任电话');
-        $form->text('office_director_fax', '临床试验机构办公室主任传真');
-        $form->text('office_director_email', '临床试验机构办公室主任邮箱');
-        $form->text('office_secretary_name', '临床试验机构办公室秘书姓名');
-        $form->text('office_secretary_position', '临床试验机构办公室秘书职务职称');
-        $form->text('office_secretary_specialty', '临床试验机构办公室秘书专业');
-        $form->text('office_secretary_phone', '临床试验机构办公室秘书电话');
-        $form->text('office_secretary_fax', '临床试验机构办公室秘书传真');
-        $form->text('office_secretary_email', '临床试验机构办公室秘书邮箱');
-        $form->text('Contact', '联系人');
-        $form->text('department', '工作部门');
-        $form->text('contact_position', '联系人职务职称');
-        $form->text('contact_phone', '联系人电话');
-        $form->text('contact_fax', '联系人传真');
-        $form->text('contact_email', '联系人电子邮件');
-        $form->number('workforce', '职工总数');
-        $form->number('high_title', '高级职称');
-        $form->number('middle_title', '中级职称');
-        $form->number('primary_title', '低级职称');
-        $form->text('affirm_major_name', '已认定药物临床试验专业名称');
-        $form->text('Clinical_trial_laboratory', '临床试验研究室');
-        $form->textarea('in_patient_number', '住院人数(人次/年)');
-        $form->textarea('outpatient_number', '门诊量(人次/年)');
-        $form->textarea('emergency_number', '急诊量(人次/年)');
-        $form->number('nation_cultivate_number', '国家级GCP培训人数');
-        $form->number('provincial_cultivate_number', '省级GCP培训人数');
-        $form->number('hospital_cultivate_number', '院级GCP培训人数');
-        $form->number('foreign_cultivate_number', '国外级GCP培训人数');
-        $form->text('re_check_position', '申请复核药物临床试验专业');
-        $form->text('CFDA_ratify', '是否CFDA批准');
-        $form->text('hospital_web', '医院网站');
-        $form->textarea('descr', '备注说明');
+
+        $form->row(function($row){
+            $row->text('Zname', '机构中文名称');
+            $row->text('Ename', '机构英文名称');
+            $row->text('Bname', '机构别名');
+            $row->text('shortName', '机构简称');
+            $row->width(6)->text('organization_code', '机构组织代码');
+            $row->width(6)->text('Affiliated_institutions', '所属机构');
+            $row->width(8)->text('Institution_address_Z', '中文机构地址');
+            $row->width(4)->text('province', '省份');
+            $row->width(8)->text('Institution_address_E', '英文机构地址');
+            $row->width(4)->text('postcode', '邮编');
+            $row->width(3)->text('hospital_level', '医院等级');
+            $row->width(3)->text('ownership', '所有制形式');
+            $row->width(3)->text('orgniztion_type', '医疗机构类型');
+            $row->width(3)->number('compiled_beds', '编制床位数');
+            $row->width(6)->text('business_nature', '经营性质');
+            $row->width(6)->text('statutory_representative', '法定代表人');
+            $row->width(3)->text('Institutional_director', '医疗机构负责人');
+            $row->width(3)->text('Job_title', '职务职称');
+            $row->width(6)->text('specialty', '所学专业');
+            $row->width(4)->text('office_director_name', '临床试验机构办公室主任姓名');
+            $row->width(4)->text('office_director_position', '临床试验机构办公室主任职务职称');
+            $row->width(4)->text('office_director_specialty', '临床试验机构办公室主任专业');
+            $row->width(4)->text('office_director_phone', '临床试验机构办公室主任电话');
+            $row->width(4)->text('office_director_fax', '临床试验机构办公室主任传真');
+            $row->width(4)->text('office_director_email', '临床试验机构办公室主任邮箱');
+            $row->width(4)->text('office_secretary_name', '临床试验机构办公室秘书姓名');
+            $row->width(4)->text('office_secretary_position', '临床试验机构办公室秘书职务职称');
+            $row->width(4)->text('office_secretary_specialty', '临床试验机构办公室秘书专业');
+            $row->width(4)->text('office_secretary_phone', '临床试验机构办公室秘书电话');
+            $row->width(4)->text('office_secretary_fax', '临床试验机构办公室秘书传真');
+            $row->width(4)->text('office_secretary_email', '临床试验机构办公室秘书邮箱');
+            $row->width(4)->text('Contact', '联系人');
+            $row->width(4)->text('department', '工作部门');
+            $row->width(4)->text('contact_position', '联系人职务职称');
+            $row->width(4)->text('contact_phone', '联系人电话');
+            $row->width(4)->text('contact_fax', '联系人传真');
+            $row->width(4)->text('contact_email', '联系人电子邮件');
+            $row->width(3)->number('workforce', '职工总数');
+            $row->width(3)->number('high_title', '高级职称');
+            $row->width(3)->number('middle_title', '中级职称');
+            $row->width(3)->number('primary_title', '低级职称');
+            $row->width(12)->text('affirm_major_name', '已认定药物临床试验专业名称');
+            $row->width(12)->text('Clinical_trial_laboratory', '临床试验研究室');
+            $row->width(12)->textarea('in_patient_number', '住院人数(人次/年)');
+            $row->width(12)->textarea('outpatient_number', '门诊量(人次/年)');
+            $row->width(12)->textarea('emergency_number', '急诊量(人次/年)');
+            $row->width(3)->number('nation_cultivate_number', '国家级GCP培训人数');
+            $row->number('provincial_cultivate_number', '省级GCP培训人数');
+            $row->number('hospital_cultivate_number', '院级GCP培训人数');
+            $row->number('foreign_cultivate_number', '国外级GCP培训人数');
+            $row->width(12)->text('re_check_position', '申请复核药物临床试验专业');
+            $row->text('CFDA_ratify', '是否CFDA批准');
+            $row->text('hospital_web', '医院网站');
+            $row->textarea('descr', '备注说明');
+        });
 
         return $form;
     }

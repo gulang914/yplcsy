@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Admin\Controllers\Test;
+namespace App\Admin\Controllers\Test\Standard;
 
-use App\Model\Project\Project;
-use App\Model\Test\TestRandomization;
+use App\Model\Test\Standard\OccupancyExclusion;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -13,7 +12,7 @@ use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Support\Facades\Schema;
 use App\Model\Database;
-class TestRandomizationController extends Controller
+class OccupancyCriteriaControlle extends Controller
 {
     use ModelForm;
 
@@ -21,7 +20,7 @@ class TestRandomizationController extends Controller
 
     public function __construct()
     {
-        $this->tableName = (new TestRandomization)->getTable();
+        $this->tableName = (new OccupancyExclusion)->getTable();
     }
     /**
      * Index interface.
@@ -59,8 +58,8 @@ class TestRandomizationController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header($this->tableName)
-            ->description('详情')
+            ->header('详情')
+            ->description('description')
             ->body($this->detail($id));
     }
 
@@ -87,7 +86,7 @@ class TestRandomizationController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(TestRandomization::class, function (Grid $grid) {
+        return Admin::grid(OccupancyExclusion::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
 
@@ -114,7 +113,7 @@ class TestRandomizationController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(TestRandomization::findOrFail($id));
+        $show = new Show(OccupancyExclusion::findOrFail($id));
 
         $show->id('ID')->sortable();
         $columns = $this->getTableColumn();
@@ -141,23 +140,24 @@ class TestRandomizationController extends Controller
      */
     protected function form()
     {
-        return Admin::form(TestRandomization::class, function (Form $form) {
+        return Admin::form(OccupancyExclusion::class, function (Form $form) {
 
             $form->display('id', 'ID');
-            $form->text('serial_number','入组顺序号');
-//            $form->text('random_number','随机号');
-            $form->text('group_number','分组编号');
-            $form->select('project_id','项目名称')
-                ->options('admin/api/projectName')
-                ->rules('required',[
-                'required' => '申办公司不能为空',
-            ]);
+
+            $columns = $this->getTableColumn();
+            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
+            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
+            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
+            $ZHname = $this->getFieldsZHName();
+            $showType = $this->getFieldsShowType();
+            $Zname = '';
+            foreach ($columns as $column){
+                if(array_key_exists($column,$ZHname)){$Zname = "{$ZHname[$column ]}";} else {$Zname = $column;}
+                $columnType = $this->getFieldShowType($column,$showType);
+                $form->$columnType($column, $Zname);
+            }
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
-            $form->saving(function (Form $form){
-                $project = Project::select('id','project_name')->where('id',$form->id)->first();
-                $form->random_number = 1111111;
-            });
         });
     }
 

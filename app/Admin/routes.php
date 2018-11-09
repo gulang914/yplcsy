@@ -24,6 +24,7 @@ Route::group([
 
     $router->resource('test/experimentalDrug','Test\ExperimentalDrugController');
 
+
     //自动创建路由
     $res = \App\Model\Database::select('table_controller','table_route')->get();
     if (!$res->isEmpty()){
@@ -32,3 +33,8 @@ Route::group([
         }
     }
 });
+
+//获取项目名称
+Route::get('/admin/api/projectName','App\Admin\Controllers\GetSelectApi\GetOptionsController@getPreject');
+
+Route::get('/admin/outGroup/{id}','App\Admin\Controllers\Test\InquiryPhysiqueController@outGroup');
