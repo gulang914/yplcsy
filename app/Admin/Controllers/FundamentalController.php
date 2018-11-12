@@ -44,15 +44,13 @@ class FundamentalController extends Controller
         $content->description('药物临床试验基本情况');
         $content->body($this->detail($id));
 //        $content->row(function (Row $row){
-//                $show = new Show(Fundamental::findOrFail($this->id));
-//
-//                $row->column(4, $show->id('ID'));
-//                $row->column(8, function (Column $column) {
-//                    $column->row('111');
-//                    $column->row('222');
-//                    $column->row('333');
-//                });
+//            $row->column(4, 'adhsk');
+//            $row->column(8, function (Column $column) {
+//                $column->row('111');
+//                $column->row('222');
+//                $column->row('333');
 //            });
+//        });
         return $content;
     }
 
@@ -162,8 +160,6 @@ class FundamentalController extends Controller
     protected function detail($id)
     {
         $show = new Show(Fundamental::findOrFail($id));
-//
-//        $form->row(function($row){}
 
         $show->id('Id');
         $show->Zname('机构中文名称');

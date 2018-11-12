@@ -40,7 +40,7 @@ Route::group([
 //获取项目名称
 Route::get('/admin/api/projectName','App\Admin\Controllers\GetSelectApi\GetOptionsController@getPreject');
 
-Route::get('/admin/outGroup/{id}','App\Admin\Controllers\Test\InquiryPhysiqueController@outGroup');
+Route::get('/admin/outGroup','App\Admin\Controllers\Test\InquiryPhysiqueController@outGroup');
 //获取研究者接口
 Route::get('/admin/api/personnel','App\Admin\Controllers\GetSelectApi\GetOptionsController@getPersonnel');
 //获取申办方接口

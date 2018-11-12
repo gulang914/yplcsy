@@ -80,7 +80,12 @@ class ExperimentalDrugController extends Controller
     protected function grid()
     {
         $grid = new Grid(new ExperimentalDrug);
-
+        $grid->filter(function($filter){
+            // 去掉默认的id过滤器
+            $filter->disableIdFilter();
+            // 在这里添加字段过滤器
+            $filter->like('dosage', '用量');
+        });
         $grid->id('编号');
         $grid->drug_name('药品名称');
         $grid->drug_type('药品类型');

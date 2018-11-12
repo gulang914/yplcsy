@@ -88,49 +88,20 @@ class InquiryPhysiqueController extends Controller
     protected function grid()
     {
         return Admin::grid(InquiryPhysique::class, function (Grid $grid) {
-
+            $grid->filter(function($filter){
+                // 在这里添加字段过滤器
+                $filter->like('type', '类型');
+            });
             $grid->id('ID')->sortable();
-
-            $columns = $this->getTableColumn();
-            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-            $ZHname = $this->getFieldsZHName();
-            $Zname = '';
-            foreach ($columns as $column){
-                if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-                $grid->$column( $Zname );
-            }
+            $grid->type('类型');
+            $grid->name('名称');
+            $grid->order('顺序');
+            $grid->explain('说明');
+            $grid->configuration_options('选项配置');
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
+
         });
-    }
-
-     /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        $show = new Show(InquiryPhysique::findOrFail($id));
-
-        $show->id('ID')->sortable();
-        $columns = $this->getTableColumn();
-        if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-        if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-        if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-        $ZHname = $this->getFieldsZHName();
-        $Zname = '';
-        foreach ($columns as $column){
-            if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-            $show->$column( $Zname );
-        }
-        $show->created_at('Created as','创建时间');
-        $show->updated_at('Updated at','修改时间');
-
-        return $show;
     }
 
 
@@ -231,34 +202,22 @@ class InquiryPhysiqueController extends Controller
         }
     }
 
-    public function outGroup($id)
-    {
-        $this->type = $id;
-        return Admin::content(function (Content $content) {
 
-            $content->header($this->tableName);
-            $content->description('列表');
-
-            $content->body($this->gridd($this->type));
-        });
-    }
-    protected function gridd($type)
+    protected function gridd()
     {
-//        dd(InquiryPhysique::class);
         return Admin::grid(InquiryPhysique::class, function (Grid $grid) {
-//            dd(123);
-            $grid->id('ID')->sortable();
 
-            $columns = $this->getTableColumn();
-            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-            $ZHname = $this->getFieldsZHName();
-            $Zname = '';
-            foreach ($columns as $column){
-                if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-                $grid->$column( $Zname );
-            }
+            $grid->filter(function($filter){
+                // 在这里添加字段过滤器
+                $filter->like('type', 2);
+            });
+            $grid->id('ID')->sortable();
+            $grid->type('类型');
+            $grid->name('名称');
+            $grid->order('顺序');
+            $grid->explain('说明');
+            $grid->configuration_options('选项配置');
+
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
         });

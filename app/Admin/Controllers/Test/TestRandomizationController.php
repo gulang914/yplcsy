@@ -11,6 +11,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Encore\Admin\Show;
 use Illuminate\Support\Facades\Schema;
 use App\Model\Database;
 class TestRandomizationController extends Controller
@@ -90,17 +91,11 @@ class TestRandomizationController extends Controller
         return Admin::grid(TestRandomization::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
+            $grid->serial_number('入组顺序号');
+            $grid->random_number('随机号');
+            $grid->group_name('分组名称');
+            $grid->column('project.project_name','项目名称');
 
-            $columns = $this->getTableColumn();
-            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-            $ZHname = $this->getFieldsZHName();
-            $Zname = '';
-            foreach ($columns as $column){
-                if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-                $grid->$column( $Zname );
-            }
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
         });
@@ -117,16 +112,30 @@ class TestRandomizationController extends Controller
         $show = new Show(TestRandomization::findOrFail($id));
 
         $show->id('ID')->sortable();
-        $columns = $this->getTableColumn();
-        if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-        if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-        if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-        $ZHname = $this->getFieldsZHName();
-        $Zname = '';
-        foreach ($columns as $column){
-            if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-            $show->$column( $Zname );
-        }
+
+        $show->serial_number('入组顺序号');
+        $show->random_number('随机号');
+        $show->group_name('分组名称');
+        $show->column('project.project_name','项目名称');
+        $show->author('作者信息', function ($author) {
+
+            $author->setResource('/admin/users');
+
+            $author->id();
+            $author->name();
+            $author->email();
+        });
+
+//        $columns = $this->getTableColumn();
+//        if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
+//        if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
+//        if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
+//        $ZHname = $this->getFieldsZHName();
+//        $Zname = '';
+//        foreach ($columns as $column){
+//            if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
+//            $show->$column( $Zname );
+//        }
         $show->created_at('Created as','创建时间');
         $show->updated_at('Updated at','修改时间');
 
@@ -145,18 +154,13 @@ class TestRandomizationController extends Controller
 
             $form->display('id', 'ID');
             $form->text('serial_number','入组顺序号');
-//            $form->text('random_number','随机号');
-            $form->text('group_number','分组编号');
+            $form->text('random_number','随机号');
+            $form->text('group_name','分组名称');
             $form->select('project_id','项目名称')
-                ->options('admin/api/projectName')
-                ->rules('required',[
-                'required' => '申办公司不能为空',
-            ]);
+                ->options('/admin/api/projectName');
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
             $form->saving(function (Form $form){
-                $project = Project::select('id','project_name')->where('id',$form->id)->first();
-                $form->random_number = 1111111;
             });
         });
     }

@@ -5,6 +5,7 @@ namespace App\Admin\Controllers\GetSelectApi;
 
 use App\Model\Employee;
 use App\Model\Projectm\Croinfo;
+use App\Model\Projectm\Projectinfo;
 use App\Model\Projectm\Sponsor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class GetOptionsController
      **/
     public function getPreject()
     {
-        return Project::get(['id', DB::raw('name as text')]);
+        return Projectinfo::get(['id', DB::raw('project_name as text')]);
     }
     /*
      * 获取研究人options
