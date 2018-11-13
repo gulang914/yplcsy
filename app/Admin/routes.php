@@ -27,6 +27,8 @@ Route::group([
     $router->resource('projectm/sponsor','Projectm\SponsorController');
 
     $router->resource('projectm/croinfo','Projectm\CroinfoController');
+    //受试者登记
+    $router->resource('subject/registration','Subject\SubjectScreenController');
 
     //自动创建路由
     $res = \App\Model\Database::select('table_controller','table_route')->get();
@@ -47,3 +49,7 @@ Route::get('/admin/api/personnel','App\Admin\Controllers\GetSelectApi\GetOptions
 Route::get('/admin/api/getSponsor','App\Admin\Controllers\GetSelectApi\GetOptionsController@getSponsor');
 //获取CRO接口
 Route::get('/admin/api/getCro','App\Admin\Controllers\GetSelectApi\GetOptionsController@getCro');
+//获取试验名称
+Route::get('/admin/api/testName','App\Admin\Controllers\GetSelectApi\GetOptionsController@testName');
+//获取受试人
+Route::get('/admin/api/getRecruit','App\Admin\Controllers\GetSelectApi\GetOptionsController@getRecruit');
