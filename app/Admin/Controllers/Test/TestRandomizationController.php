@@ -33,7 +33,7 @@ class TestRandomizationController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header($this->tableName);
+            $content->header('试验随机');
             $content->description('列表');
 
             $content->body($this->grid());
@@ -50,7 +50,7 @@ class TestRandomizationController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header($this->tableName);
+            $content->header('试验随机');
             $content->description('修改');
 
             $content->body($this->form()->edit($id));
@@ -60,7 +60,7 @@ class TestRandomizationController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header($this->tableName)
+            ->header('试验随机')
             ->description('详情')
             ->body($this->detail($id));
     }
@@ -74,7 +74,7 @@ class TestRandomizationController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header($this->tableName);
+            $content->header('试验随机');
             $content->description('创建');
 
             $content->body($this->form());

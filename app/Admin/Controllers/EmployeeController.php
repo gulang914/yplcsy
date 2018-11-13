@@ -24,8 +24,8 @@ class EmployeeController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('列表')
-            ->description('description')
+            ->header('人员信息')
+            ->description('列表')
             ->body($this->grid());
     }
 
@@ -39,8 +39,8 @@ class EmployeeController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('详情')
-            ->description('description')
+            ->header('人员信息')
+            ->description('详情')
             ->body($this->detail($id));
     }
 
@@ -54,8 +54,8 @@ class EmployeeController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('修改')
-            ->description('description')
+            ->header('人员信息')
+            ->description('修改')
             ->body($this->form()->edit($id));
     }
 
@@ -68,8 +68,8 @@ class EmployeeController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('创建')
-            ->description('description')
+            ->header('人员信息')
+            ->description('创建')
             ->body($this->form());
     }
 

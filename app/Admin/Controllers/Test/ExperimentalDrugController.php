@@ -23,8 +23,8 @@ class ExperimentalDrugController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('试验用药')
+            ->description('列表')
             ->body($this->grid());
     }
 
@@ -38,8 +38,8 @@ class ExperimentalDrugController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('试验用药')
+            ->description('详情')
             ->body($this->detail($id));
     }
 
@@ -53,8 +53,8 @@ class ExperimentalDrugController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header('试验用药')
+            ->description('修改')
             ->body($this->form()->edit($id));
     }
 
@@ -67,8 +67,8 @@ class ExperimentalDrugController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('试验用药')
+            ->description('创建')
             ->body($this->form());
     }
 

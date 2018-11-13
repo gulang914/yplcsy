@@ -31,7 +31,7 @@ class OccupancyCriteriaControlle extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header($this->tableName);
+            $content->header('入住排除标准');
             $content->description('列表');
 
             $content->body($this->grid());
@@ -48,7 +48,7 @@ class OccupancyCriteriaControlle extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header($this->tableName);
+            $content->header('入住排除标准');
             $content->description('修改');
 
             $content->body($this->form()->edit($id));
@@ -58,8 +58,8 @@ class OccupancyCriteriaControlle extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('详情')
-            ->description('description')
+            ->header('入住排除标准')
+            ->description('详情')
             ->body($this->detail($id));
     }
 
@@ -72,7 +72,7 @@ class OccupancyCriteriaControlle extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header($this->tableName);
+            $content->header('入住排除标准');
             $content->description('创建');
 
             $content->body($this->form());

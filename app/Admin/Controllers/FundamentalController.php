@@ -26,8 +26,8 @@ class FundamentalController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('列表')
-            ->description('药物临床试验基本情况')
+            ->header('药物临床试验基本情况')
+            ->description('列表')
             ->body($this->grid());
     }
 
@@ -40,17 +40,9 @@ class FundamentalController extends Controller
      */
     public function show($id, Content $content)
     {
-        $content->header('详情');
-        $content->description('药物临床试验基本情况');
+        $content->header('药物临床试验基本情况');
+        $content->description('详情');
         $content->body($this->detail($id));
-//        $content->row(function (Row $row){
-//            $row->column(4, 'adhsk');
-//            $row->column(8, function (Column $column) {
-//                $column->row('111');
-//                $column->row('222');
-//                $column->row('333');
-//            });
-//        });
         return $content;
     }
 
@@ -64,8 +56,8 @@ class FundamentalController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('修改')
-            ->description('药物临床试验基本情况')
+            ->header('药物临床试验基本情况')
+            ->description('修改')
             ->body($this->form()->edit($id));
     }
 
@@ -78,8 +70,8 @@ class FundamentalController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('创建')
-            ->description('药物临床试验基本情况')
+            ->header('药物临床试验基本情况')
+            ->description('创建')
             ->body($this->form());
     }
 

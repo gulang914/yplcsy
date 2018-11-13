@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Admin\Controllers\Test;
+namespace App\Admin\Controllers\Test\Course;
 
-use App\Model\Test\InquiryPhysique;
+use App\Model\Test\Course\VitalFeature;
 
+use Encore\Admin\Show;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -12,16 +13,15 @@ use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Support\Facades\Schema;
 use App\Model\Database;
-class InquiryPhysiqueController extends Controller
+class VitalFeatureController extends Controller
 {
     use ModelForm;
 
     protected $tableName;
-    protected $type;
 
     public function __construct()
     {
-        $this->tableName = (new InquiryPhysique)->getTable();
+        $this->tableName = (new VitalFeature)->getTable();
     }
     /**
      * Index interface.
@@ -31,7 +31,8 @@ class InquiryPhysiqueController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-            $content->header('问诊与体格检查配置');
+
+            $content->header($this->tableName);
             $content->description('列表');
 
             $content->body($this->grid());
@@ -48,7 +49,7 @@ class InquiryPhysiqueController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('问诊与体格检查配置');
+            $content->header($this->tableName);
             $content->description('修改');
 
             $content->body($this->form()->edit($id));
@@ -58,8 +59,8 @@ class InquiryPhysiqueController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('问诊与体格检查配置')
-            ->description('详情')
+            ->header('详情')
+            ->description('description')
             ->body($this->detail($id));
     }
 
@@ -72,7 +73,7 @@ class InquiryPhysiqueController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('问诊与体格检查配置');
+            $content->header($this->tableName);
             $content->description('创建');
 
             $content->body($this->form());
@@ -86,27 +87,26 @@ class InquiryPhysiqueController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(InquiryPhysique::class, function (Grid $grid) {
-            $grid->filter(function($filter){
-                // 在这里添加字段过滤器
-                $filter->disableIdFilter();
-                $filter->equal('way', '方式')->select([1 => '入组前配置', 2 => '试验期配置', 3 =>'出组前配置', 4=>'筛选期配置', 5=>'其他配置']);
-                //$filter->equal('type', '类型')->select(['1' => '体格检查','2'=>'问诊检查']);
-            });
+        return Admin::grid(VitalFeature::class, function (Grid $grid) {
+
             $grid->id('ID')->sortable();
-            $grid->way('方式')->select([1 => '入组前配置', 2 => '试验期配置', 3 =>'出组前配置', 4=>'筛选期配置', 5=>'其他配置']);
-            $grid->type('类型')->select(['1' => '体格检查','2'=>'问诊检查']);
-            $grid->name('名称');
-            $grid->order('顺序');
-            $grid->explain('说明');
-            $grid->configuration_options('选项配置');
+
+            $columns = $this->getTableColumn();
+            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
+            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
+            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
+            $ZHname = $this->getFieldsZHName();
+            $Zname = '';
+            foreach ($columns as $column){
+                if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
+                $grid->$column( $Zname );
+            }
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
-
         });
     }
 
-    /**
+     /**
      * Make a show builder.
      *
      * @param mixed $id
@@ -114,20 +114,25 @@ class InquiryPhysiqueController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(InquiryPhysique::findOrFail($id));
+        $show = new Show(VitalFeature::findOrFail($id));
 
         $show->id('ID')->sortable();
-        $show->way('方式')->select([1 => '入组前配置', 2 => '试验期配置', 3 =>'出组前配置', 4=>'筛选期配置', 5=>'其他配置']);
-        $show->type('类型')->select(['1' => '体格检查','2'=>'问诊检查']);
-        $show->name('名称');
-        $show->order('顺序');
-        $show->explain('说明');
-        $show->configuration_options('选项配置');
+        $columns = $this->getTableColumn();
+        if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
+        if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
+        if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
+        $ZHname = $this->getFieldsZHName();
+        $Zname = '';
+        foreach ($columns as $column){
+            if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
+            $show->$column( $Zname );
+        }
         $show->created_at('Created as','创建时间');
         $show->updated_at('Updated at','修改时间');
 
         return $show;
     }
+
 
     /**
      * Make a form builder.
@@ -136,15 +141,22 @@ class InquiryPhysiqueController extends Controller
      */
     protected function form()
     {
-        return Admin::form(InquiryPhysique::class, function (Form $form) {
+        return Admin::form(VitalFeature::class, function (Form $form) {
 
             $form->display('id', 'ID');
-            $form->select('way','方式')->options([1 => '入组前配置', 2 => '试验期配置', 3 =>'出组前配置', 4=>'筛选期配置', 5=>'其他配置']);
-            $form->select('type','类型')->options([1 => '问诊检查', 2 => '体格检查']);
-            $form->number('order','顺序');
-            $form->text('name','名称');
-            $form->textarea('explain','说明');
-            $form->textarea('configuration_options','选项配置');
+
+            $columns = $this->getTableColumn();
+            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
+            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
+            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
+            $ZHname = $this->getFieldsZHName();
+            $showType = $this->getFieldsShowType();
+            $Zname = '';
+            foreach ($columns as $column){
+                if(array_key_exists($column,$ZHname)){$Zname = "{$ZHname[$column ]}";} else {$Zname = $column;}
+                $columnType = $this->getFieldShowType($column,$showType);
+                $form->$columnType($column, $Zname);
+            }
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
         });
@@ -218,5 +230,4 @@ class InquiryPhysiqueController extends Controller
             return 'time';
         }
     }
-
 }

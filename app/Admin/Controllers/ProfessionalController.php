@@ -23,8 +23,8 @@ class ProfessionalController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('列表')
-            ->description('机构专业')
+            ->header('机构专业')
+            ->description('列表')
             ->body($this->grid());
     }
 
@@ -38,8 +38,8 @@ class ProfessionalController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('详情')
-            ->description('机构专业')
+            ->header('机构专业')
+            ->description('详情')
             ->body($this->detail($id));
     }
 
@@ -53,8 +53,8 @@ class ProfessionalController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('修改')
-            ->description('机构专业')
+            ->header('机构专业')
+            ->description('修改')
             ->body($this->form()->edit($id));
     }
 
@@ -67,8 +67,8 @@ class ProfessionalController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('创建')
-            ->description('机构专业')
+            ->header('机构专业')
+            ->description('创建')
             ->body($this->form());
     }
 
