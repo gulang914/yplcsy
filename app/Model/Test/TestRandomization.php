@@ -2,7 +2,6 @@
 
 namespace App\Model\Test;
 
-use App\Model\Project\Project;
 use App\Model\Projectm\Projectinfo;
 use Illuminate\Database\Eloquent\Model;
 

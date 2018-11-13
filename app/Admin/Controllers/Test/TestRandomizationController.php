@@ -116,26 +116,10 @@ class TestRandomizationController extends Controller
         $show->serial_number('入组顺序号');
         $show->random_number('随机号');
         $show->group_name('分组名称');
-        $show->column('project.project_name','项目名称');
-        $show->author('作者信息', function ($author) {
-
-            $author->setResource('/admin/users');
-
-            $author->id();
-            $author->name();
-            $author->email();
+        $show->project('项目名称', function($project){
+            $project->project_name();
         });
 
-//        $columns = $this->getTableColumn();
-//        if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-//        if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-//        if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-//        $ZHname = $this->getFieldsZHName();
-//        $Zname = '';
-//        foreach ($columns as $column){
-//            if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-//            $show->$column( $Zname );
-//        }
         $show->created_at('Created as','创建时间');
         $show->updated_at('Updated at','修改时间');
 
@@ -160,8 +144,7 @@ class TestRandomizationController extends Controller
                 ->options('/admin/api/projectName');
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
-            $form->saving(function (Form $form){
-            });
+
         });
     }
 

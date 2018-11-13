@@ -7,6 +7,7 @@ use App\Model\Employee;
 use App\Model\Projectm\Croinfo;
 use App\Model\Projectm\Projectinfo;
 use App\Model\Projectm\Sponsor;
+use App\Model\Test\Course\DoseTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,5 +46,14 @@ class GetOptionsController
     public function getCro()
     {
         return Croinfo::get(['id',DB::raw('company_name as text')]);
+    }
+
+    /**
+     *  获取给药序号
+     * @return mixed
+     */
+    public function getDose()
+    {
+        return DoseTime::get(['id', DB::raw('dose_num as text')]);
     }
 }

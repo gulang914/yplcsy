@@ -32,7 +32,7 @@ class BloodSugarController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header($this->tableName);
+            $content->header('血糖检测时间点');
             $content->description('列表');
 
             $content->body($this->grid());
@@ -49,7 +49,7 @@ class BloodSugarController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header($this->tableName);
+            $content->header('血糖检测时间点');
             $content->description('修改');
 
             $content->body($this->form()->edit($id));
@@ -59,8 +59,8 @@ class BloodSugarController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('详情')
-            ->description('description')
+            ->header('血糖检测时间点')
+            ->description('详情')
             ->body($this->detail($id));
     }
 
@@ -73,7 +73,7 @@ class BloodSugarController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header($this->tableName);
+            $content->header('血糖检测时间点');
             $content->description('创建');
 
             $content->body($this->form());
@@ -89,18 +89,20 @@ class BloodSugarController extends Controller
     {
         return Admin::grid(BloodSugar::class, function (Grid $grid) {
 
-            $grid->id('ID')->sortable();
+            $grid->id('编号')->sortable();
 
-            $columns = $this->getTableColumn();
-            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-            $ZHname = $this->getFieldsZHName();
-            $Zname = '';
-            foreach ($columns as $column){
-                if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-                $grid->$column( $Zname );
-            }
+            $grid->column('project.project_name','项目名称');
+            $grid->cycle('周期号')->using([1=>'一',2=>'二',3=>'三',4=>'四']);
+            $grid->serial_number('序号');
+            $grid->dose_num('给药序号');
+            $grid->timing('时间点');
+            $grid->relative_day('相对天数');
+            $grid->relative_time('相对时间');
+            $grid->time_operator('时间窗运算符');
+            $grid->time_value('时间窗值');
+            $grid->time_unit('时间窗单位');
+            $grid->desc('监测点描述');
+
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
         });
@@ -116,17 +118,20 @@ class BloodSugarController extends Controller
     {
         $show = new Show(BloodSugar::findOrFail($id));
 
-        $show->id('ID')->sortable();
-        $columns = $this->getTableColumn();
-        if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-        if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-        if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-        $ZHname = $this->getFieldsZHName();
-        $Zname = '';
-        foreach ($columns as $column){
-            if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-            $show->$column( $Zname );
-        }
+        $show->project('项目名称',function ($project){
+            $project->project_name('项目名称');
+        });
+        $show->cycle('周期号')->using([1=>'一',2=>'二',3=>'三',4=>'四']);
+        $show->serial_number('序号');
+        $show->dose_number('基于给药序号');
+        $show->timing('时间点');
+        $show->relative_day('相对天数');
+        $show->relative_time('相对时间');
+        $show->time_operator('时间窗运算符');
+        $show->time_value('时间窗值');
+        $show->time_unit('时间窗单位');
+        $show->desc('监测点描述');
+
         $show->created_at('Created as','创建时间');
         $show->updated_at('Updated at','修改时间');
 
@@ -145,18 +150,20 @@ class BloodSugarController extends Controller
 
             $form->display('id', 'ID');
 
-            $columns = $this->getTableColumn();
-            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-            $ZHname = $this->getFieldsZHName();
-            $showType = $this->getFieldsShowType();
-            $Zname = '';
-            foreach ($columns as $column){
-                if(array_key_exists($column,$ZHname)){$Zname = "{$ZHname[$column ]}";} else {$Zname = $column;}
-                $columnType = $this->getFieldShowType($column,$showType);
-                $form->$columnType($column, $Zname);
-            }
+            $form->select('project_id','项目名称')
+                ->options('/admin/api/projectName');
+            $form->select('cycle','周期号')->options([1=>'一',2=>'二',3=>'三',4=>'四']);
+            $form->number('serial_number','序号');
+            $form->number('dose_number','给药序号');
+//                ->options('/admin/api/projectNum');
+            $form->text('timing','时间点');
+            $form->number('relative_day','相对天数');
+            $form->time('relative_time','相对时间');
+            $form->text('time_operator','时间窗运算符');
+            $form->number('time_value','时间窗值');
+            $form->select('time_unit','时间窗单位')->options([1=>'天',2=>'小时',3=>'分',4=>'秒']);
+            $form->textarea('desc', '监测点描述');
+
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
         });
