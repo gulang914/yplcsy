@@ -8,6 +8,8 @@ use App\Model\Projectm\Croinfo;
 use App\Model\Projectm\Projectinfo;
 use App\Model\Projectm\Sponsor;
 use App\Model\Test\Course\DoseTime;
+use App\Model\Projectm\Testmation;
+use App\Model\Subject\SubjectRecruit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -56,4 +58,24 @@ class GetOptionsController
     {
         return DoseTime::get(['id', DB::raw('dose_num as text')]);
     }
+    /**
+     * 获取受试人
+     * @return mixed
+     */
+    public function getRecruit()
+    {
+        return SubjectRecruit::get(['id',DB::raw('name as text')]);
+    }
+
+    /**
+     *  获取试验名称
+     *  @return mixed
+     **/
+    public function testName(Request $request)
+    {
+        $q = $request->get('q');
+        $data = Testmation::where('project_id', '=', $q)->get(['id',DB::raw('shiyan_name as text')]);
+        return $data;
+    }
+
 }
