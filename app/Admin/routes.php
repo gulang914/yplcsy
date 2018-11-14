@@ -49,7 +49,11 @@ Route::get('/admin/api/personnel','App\Admin\Controllers\GetSelectApi\GetOptions
 Route::get('/admin/api/getSponsor','App\Admin\Controllers\GetSelectApi\GetOptionsController@getSponsor');
 //获取CRO接口
 Route::get('/admin/api/getCro','App\Admin\Controllers\GetSelectApi\GetOptionsController@getCro');
-//获取试验名称
+//获取试验名称(二级接口)
 Route::get('/admin/api/testName','App\Admin\Controllers\GetSelectApi\GetOptionsController@testName');
-//获取受试人
+//获取试验名称(一级接口)
+Route::get('/admin/api/ShiyanName','App\Admin\Controllers\GetSelectApi\GetOptionsController@ShiyanName');
+//获取受试人(一级接口)
 Route::get('/admin/api/getRecruit','App\Admin\Controllers\GetSelectApi\GetOptionsController@getRecruit');
+//获取受试人(二级接口)
+Route::get('/admin/api/getRecruit1','App\Admin\Controllers\GetSelectApi\GetOptionsController@getRecruit1');

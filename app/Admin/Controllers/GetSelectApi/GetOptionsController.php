@@ -77,5 +77,22 @@ class GetOptionsController
         $data = Testmation::where('project_id', '=', $q)->get(['id',DB::raw('shiyan_name as text')]);
         return $data;
     }
-
+    /**
+     * 获取试验
+     * @return mixed
+     */
+    public function ShiyanName()
+    {
+        return Testmation::get(['id',DB::raw('shiyan_name as text')]);
+    }
+    /**
+     *  获取受试人
+     *  @return mixed
+     **/
+    public function getRecruit1(Request $request)
+    {
+        $q = $request->get('q');
+        $data = SubjectRecruit::where('mation_id', '=', $q)->get(['id',DB::raw('name as text')]);
+        return $data;
+    }
 }

@@ -165,7 +165,7 @@ class SubjectScreenController extends Controller
                 $row->width(3)->number('age', '年龄')->rules('required');
                 $row->width(3)->number('height', '身高(cm)')->rules('required');
                 $row->width(3)->text('weight', '体重(kg)')->rules('required');
-                $row->width(6)->radio('sex', '性别')->options(['0' => '男', '1'=> '女'])->default('0');
+                $row->width(6)->radio('sex', '性别')->options(['0' => '男', '1'=> '女']);
                 $row->width(6)->mobile('phone', '电话')->rules('required');
                 $row->width(6)->text('system_number', '系统编号')->rules('required');
                 $row->width(6)->text('bmi', 'BMI')->rules('required');

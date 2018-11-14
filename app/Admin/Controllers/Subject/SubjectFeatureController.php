@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers\Subject;
 
-use App\Model\Subject\informed;
+use App\Model\Subject\Feature;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Support\Facades\Schema;
 use App\Model\Database;
-class SubjectInformedController extends Controller
+class SubjectFeatureController extends Controller
 {
     use ModelForm;
 
@@ -20,7 +20,7 @@ class SubjectInformedController extends Controller
 
     public function __construct()
     {
-        $this->tableName = (new informed)->getTable();
+        $this->tableName = (new Feature)->getTable();
     }
     /**
      * Index interface.
@@ -31,7 +31,7 @@ class SubjectInformedController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('知情同意书');
+            $content->header('人口学特征');
             $content->description('列表');
 
             $content->body($this->grid());
@@ -48,7 +48,7 @@ class SubjectInformedController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('知情同意书');
+            $content->header('人口学特征');
             $content->description('修改');
 
             $content->body($this->form()->edit($id));
@@ -64,7 +64,7 @@ class SubjectInformedController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('知情同意书');
+            $content->header('人口学特征');
             $content->description('创建');
 
             $content->body($this->form());
@@ -78,22 +78,32 @@ class SubjectInformedController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(informed::class, function (Grid $grid) {
+        return Admin::grid(Feature::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
-
             $grid->column('Recruit.screen_number','筛选号');
-            $grid->column('Recruit.name','受试者姓名');
             $grid->column('TestSy.shiyan_name','试验名称');
-            $grid->initials(trans('姓名缩写'));
-            $grid->mission_time(trans('宣教时间'));
-            $grid->missionary(trans('宣教人'));
-            $grid->column('Researcher.employee_name','研究者');
+            $grid->column('Recruit.name','受试者姓名');
+            $grid->column('Recruit.age','年龄');
+            $grid->column('Recruit.sex','年龄')->display(function ($title) {
+                if($title == 1){
+                    return "<span>女</span>";
+                }else{
+                    return "<span>男</span>";
+                }
+            });
+
+            $grid->race(trans('种族'));
+            $grid->career(trans('职业'));
+            $grid->unit(trans('单位'));
+            $grid->birthplace(trans('籍贯'));
             $states = [
-                'on'  => ['value' => 1, 'text' => '签署', 'color' => 'primary'],
-                'off' => ['value' => 0, 'text' => '未签署', 'color' => 'default'],
+                'on'  => ['value' => 1, 'text' => '已婚', 'color' => 'primary'],
+                'off' => ['value' => 0, 'text' => '未婚', 'color' => 'default'],
             ];
-            $grid->status(trans('状态'))->switch($states);
+            $grid->marriage(trans('婚否'))->switch($states);
+            $grid->address(trans('现住址'));
+            $grid->mailbox(trans('邮箱'));
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
         });
@@ -106,24 +116,23 @@ class SubjectInformedController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new informed);
+        $form = new Form(new Feature);
 
         $form->row(function($row){
 
             $row->width(6)->select('mation_id', trans('试验名称'))->options('/admin/api/ShiyanName')->load('recruit_id', '/admin/api/getRecruit1')->rules('nullable');
             $row->width(6)->select('recruit_id', trans('受试人姓名'))->options('/admin/api/getRecruit1')->rules('nullable');
-            $row->width(6)->text('initials', '姓名缩写');
-            $row->width(6)->date('mission_time', '宣教时间');
-            $row->width(6)->text('missionary', '宣教人');
-            $row->width(6)->select('researcher_id','主要研究者')->options('/admin/api/personnel')
-                ->rules('required',[
-                    'required' => '研究人不能为空',
-                ]);
+            $row->width(6)->text('race', '种族')->rules('required');
+            $row->width(6)->text('career', '职业')->rules('required');
+            $row->width(6)->text('unit', '单位')->rules('required');
+            $row->width(6)->text('birthplace', '籍贯')->rules('required');
             $states = [
-                'on'  => ['value' => 1, 'text' => '签署', 'color' => 'success'],
-                'off' => ['value' => 0, 'text' => '不签署', 'color' => 'danger'],
+                'on'  => ['value' => 1, 'text' => '已婚', 'color' => 'success'],
+                'off' => ['value' => 0, 'text' => '未婚', 'color' => 'danger'],
             ];
-            $row->switch('status', trans('是否签署'))->states($states);
+            $row->switch('marriage', trans('婚否'))->states($states);
+            $row->width(6)->text('address', '现住址')->rules('required');
+            $row->width(6)->email('mailbox', '邮箱')->rules('required');
         });
 
         return $form;
@@ -191,10 +200,6 @@ class SubjectInformedController extends Controller
             return 'textarea';
         }else if($type[$column] == '时间日期'){
             return 'datetime';
-        }else if($type[$column] == '日期'){
-            return 'date';
-        }else if($type[$column] == '时间'){
-            return 'time';
         }
     }
 }
