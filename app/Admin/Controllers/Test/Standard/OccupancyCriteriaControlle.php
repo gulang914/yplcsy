@@ -90,16 +90,11 @@ class OccupancyCriteriaControlle extends Controller
 
             $grid->id('ID')->sortable();
 
-            $columns = $this->getTableColumn();
-            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-            $ZHname = $this->getFieldsZHName();
-            $Zname = '';
-            foreach ($columns as $column){
-                if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-                $grid->$column( $Zname );
-            }
+            $grid->column('test.shiyan_name','试验名称');
+            $grid->type('类型');
+            $grid->criteria_name('标准名称');
+            $grid->cycle_number('周期号');
+
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
         });
@@ -115,19 +110,15 @@ class OccupancyCriteriaControlle extends Controller
     {
         $show = new Show(OccupancyExclusion::findOrFail($id));
 
-        $show->id('ID')->sortable();
-        $columns = $this->getTableColumn();
-        if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-        if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-        if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-        $ZHname = $this->getFieldsZHName();
-        $Zname = '';
-        foreach ($columns as $column){
-            if(array_key_exists($column,$ZHname)){$Zname ="{$ZHname[$column]}";} else {$Zname = $column;}
-            $show->$column( $Zname );
-        }
-        $show->created_at('Created as','创建时间');
-        $show->updated_at('Updated at','修改时间');
+        $show->test('项目名称',function ($test){
+            $test->shiyan_name('项目名称');
+        });
+        $show->type('类型');
+        $show->criteria_name('标准名称');
+        $show->cycle_number('周期号');
+
+        $show->created_at('创建时间');
+        $show->updated_at('修改时间');
 
         return $show;
     }
@@ -144,18 +135,10 @@ class OccupancyCriteriaControlle extends Controller
 
             $form->display('id', 'ID');
 
-            $columns = $this->getTableColumn();
-            if(in_array('id',$columns)){unset($columns[array_search('id',$columns)]);}
-            if(in_array('created_at',$columns)){unset($columns[array_search('created_at',$columns)]);}
-            if(in_array('updated_at',$columns)){unset($columns[array_search('updated_at',$columns)]);}
-            $ZHname = $this->getFieldsZHName();
-            $showType = $this->getFieldsShowType();
-            $Zname = '';
-            foreach ($columns as $column){
-                if(array_key_exists($column,$ZHname)){$Zname = "{$ZHname[$column ]}";} else {$Zname = $column;}
-                $columnType = $this->getFieldShowType($column,$showType);
-                $form->$columnType($column, $Zname);
-            }
+            $form->select('test_id','试验名称')->options('/admin/api/gettestName');
+            $form->text('type','类型');
+            $form->text('criteria_name','标准名称');
+            $form->text('cycle_number','周期号');
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
         });

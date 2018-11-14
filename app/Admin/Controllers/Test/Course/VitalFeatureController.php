@@ -91,7 +91,7 @@ class VitalFeatureController extends Controller
 
             $grid->id('编号')->sortable();
 
-            $grid->column('project.project_name','项目名称');
+            $grid->column('test.shiyan_name','项目名称');
             $grid->cycle('周期号')->using([1=>'一',2=>'二',3=>'三',4=>'四']);
             $grid->serial_number('序号');
             $grid->dose_num('给药序号');
@@ -118,8 +118,8 @@ class VitalFeatureController extends Controller
     {
         $show = new Show(VitalFeature::findOrFail($id));
 
-        $show->project('项目名称',function ($project){
-            $project->project_name('项目名称');
+        $show->test('项目名称',function ($test){
+            $test->shiyan_name('项目名称');
         });
         $show->cycle('周期号')->using([1=>'一',2=>'二',3=>'三',4=>'四']);
         $show->serial_number('序号');
@@ -150,8 +150,8 @@ class VitalFeatureController extends Controller
 
             $form->display('id', 'ID');
 
-            $form->select('project_id','项目名称')
-                ->options('/admin/api/projectName');
+            $form->select('test_id','项目名称')
+                ->options('/admin/api/gettestName');
             $form->select('cycle','周期号')->options([1=>'一',2=>'二',3=>'三',4=>'四']);
             $form->number('serial_number','序号');
             $form->number('dose_num','给药序号');
@@ -169,72 +169,4 @@ class VitalFeatureController extends Controller
         });
     }
 
-    /**
-     * 获取表字段信息.
-     *
-     * @return array
-     */
-    protected function getTableColumn()
-    {
-       return Schema::getColumnListing($this->tableName);
-    }
-
-    /**
-     * 获取所有字段中文名称.
-     *
-     * @return array
-     */
-    protected function getFieldsZHName()
-    {
-        $FieldsZHName = Database::select('field_name')->where('table_name', $this->tableName)->first()->toArray();
-        $res = explode(',',array_pop($FieldsZHName));
-        $arr = [];
-        foreach ($res as $k=>$v){
-            foreach (explode('::',$v) as $kk=>$vv){
-                $arr[explode('::',$v)[0]] = explode('::',$v)[1];
-                break;
-            }
-        }
-        return $arr;
-    }
-
-    /**
-     * 获取所有字段显示类型.
-     *
-     * @return array
-     */
-    protected function getFieldsShowType()
-    {
-        $FieldShowType = Database::select('field_type')->where('table_name', $this->tableName)->first()->toArray();
-        $res = explode(',',array_pop($FieldShowType));
-        $arr = [];
-        foreach ($res as $k=>$v){
-            foreach (explode('::',$v) as $kk=>$vv){
-                $arr[explode('::',$v)[0]] = explode('::',$v)[1];
-                break;
-            }
-        }
-        return $arr;
-    }
-
-    /**
-     *  获取单个字段显示类型
-     *  @return string
-     */
-    protected function getFieldShowType($column,$type)
-    {
-        if($type[$column] == '标准字符串'){
-            return 'text';
-        }else if($type[$column] == '整数'){
-            return 'number';
-        }else if($type[$column] == '文本'){
-            return 'textarea';
-        }else if($type[$column] == '时间日期'){
-            return 'datetime';
-        }else if($type[$column] == '日期'){
-            return 'date';
-        }else if($type[$column] == '时间'){
-            return 'time';
-        }
-    }
 }
