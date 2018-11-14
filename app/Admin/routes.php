@@ -53,3 +53,5 @@ Route::get('/admin/api/getCro','App\Admin\Controllers\GetSelectApi\GetOptionsCon
 Route::get('/admin/api/testName','App\Admin\Controllers\GetSelectApi\GetOptionsController@testName');
 //获取受试人
 Route::get('/admin/api/getRecruit','App\Admin\Controllers\GetSelectApi\GetOptionsController@getRecruit');
+//获取试验名称
+Route::get('/admin/api/gettestName','App\Admin\Controllers\GetSelectApi\GetOptionsController@gettestName');

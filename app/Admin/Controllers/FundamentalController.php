@@ -42,7 +42,10 @@ class FundamentalController extends Controller
     {
         $content->header('药物临床试验基本情况');
         $content->description('详情');
-        $content->body($this->detail($id));
+//        $content->body($this->detail($id));
+        $content->body($this->form1()->edit($id));
+
+
         return $content;
     }
 
@@ -277,6 +280,90 @@ class FundamentalController extends Controller
             $row->text('CFDA_ratify', '是否CFDA批准');
             $row->text('hospital_web', '医院网站');
             $row->textarea('descr', '备注说明');
+        });
+
+        return $form;
+    }
+
+    /**
+     * Make a form builder.
+     *
+     * @return Form
+     */
+    protected function form1()
+    {
+        $form = new Form(new Fundamental);
+        $form->tools(function (Form\Tools $tools) {
+
+//            // 去掉`列表`按钮
+//            $tools->disableList();
+
+            // 去掉`删除`按钮
+            $tools->disableDelete();
+
+            // 去掉`查看`按钮
+            $tools->disableView();
+
+        });
+        $form->disableReset();
+        $form->disableEditingCheck();
+        $form->disableViewCheck();
+        $form->disableSubmit();
+        $form->row(function($row){
+            $row->text('Zname', '机构中文名称')->disable(11);
+            $row->text('Ename', '机构英文名称')->disable();
+            $row->text('Bname', '机构别名')->disable();
+            $row->text('shortName', '机构简称')->disable();
+            $row->width(6)->text('organization_code', '机构组织代码')->disable();
+            $row->width(6)->text('Affiliated_institutions', '所属机构')->disable();
+            $row->width(8)->text('Institution_address_Z', '中文机构地址')->disable();
+            $row->width(4)->text('province', '省份')->disable();
+            $row->width(8)->text('Institution_address_E', '英文机构地址')->disable();
+            $row->width(4)->text('postcode', '邮编')->disable();
+            $row->width(3)->text('hospital_level', '医院等级')->disable();
+            $row->width(3)->text('ownership', '所有制形式')->disable();
+            $row->width(3)->text('orgniztion_type', '医疗机构类型')->disable();
+            $row->width(3)->text('compiled_beds', '编制床位数')->disable();
+            $row->width(6)->text('business_nature', '经营性质')->disable();
+            $row->width(6)->text('statutory_representative', '法定代表人')->disable();
+            $row->width(3)->text('Institutional_director', '医疗机构负责人')->disable();
+            $row->width(3)->text('Job_title', '职务职称')->disable();
+            $row->width(6)->text('specialty', '所学专业')->disable();
+            $row->width(4)->text('office_director_name', '临床试验机构办公室主任姓名')->disable();
+            $row->width(4)->text('office_director_position', '临床试验机构办公室主任职务职称')->disable();
+            $row->width(4)->text('office_director_specialty', '临床试验机构办公室主任专业')->disable();
+            $row->width(4)->text('office_director_phone', '临床试验机构办公室主任电话')->disable();
+            $row->width(4)->text('office_director_fax', '临床试验机构办公室主任传真')->disable();
+            $row->width(4)->text('office_director_email', '临床试验机构办公室主任邮箱')->disable();
+            $row->width(4)->text('office_secretary_name', '临床试验机构办公室秘书姓名')->disable();
+            $row->width(4)->text('office_secretary_position', '临床试验机构办公室秘书职务职称')->disable();
+            $row->width(4)->text('office_secretary_specialty', '临床试验机构办公室秘书专业')->disable();
+            $row->width(4)->text('office_secretary_phone', '临床试验机构办公室秘书电话')->disable();
+            $row->width(4)->text('office_secretary_fax', '临床试验机构办公室秘书传真')->disable();
+            $row->width(4)->text('office_secretary_email', '临床试验机构办公室秘书邮箱')->disable();
+            $row->width(4)->text('Contact', '联系人')->disable();
+            $row->width(4)->text('department', '工作部门')->disable();
+            $row->width(4)->text('contact_position', '联系人职务职称')->disable();
+            $row->width(4)->text('contact_phone', '联系人电话')->disable();
+            $row->width(4)->text('contact_fax', '联系人传真')->disable();
+            $row->width(4)->text('contact_email', '联系人电子邮件')->disable();
+            $row->width(3)->text('workforce', '职工总数')->disable();
+            $row->width(3)->text('high_title', '高级职称')->disable();
+            $row->width(3)->text('middle_title', '中级职称')->disable();
+            $row->width(3)->text('primary_title', '低级职称')->disable();
+            $row->width(12)->text('affirm_major_name', '已认定药物临床试验专业名称')->disable();
+            $row->width(12)->text('Clinical_trial_laboratory', '临床试验研究室')->disable();
+            $row->width(12)->textarea('in_patient_number', '住院人数(人次/年)')->disable();
+            $row->width(12)->textarea('outpatient_number', '门诊量(人次/年)')->disable();
+            $row->width(12)->textarea('emergency_number', '急诊量(人次/年)')->disable();
+            $row->width(3)->text('nation_cultivate_number', '国家级GCP培训人数')->disable();
+            $row->text('provincial_cultivate_number', '省级GCP培训人数')->disable();
+            $row->text('hospital_cultivate_number', '院级GCP培训人数')->disable();
+            $row->text('foreign_cultivate_number', '国外级GCP培训人数')->disable();
+            $row->width(12)->text('re_check_position', '申请复核药物临床试验专业')->disable();
+            $row->text('CFDA_ratify', '是否CFDA批准')->disable();
+            $row->text('hospital_web', '医院网站')->disable();
+            $row->textarea('descr', '备注说明')->disable();
         });
 
         return $form;

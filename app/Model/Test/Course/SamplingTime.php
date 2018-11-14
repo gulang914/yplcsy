@@ -2,15 +2,15 @@
 
 namespace App\Model\Test\Course;
 
-use App\Model\Projectm\Projectinfo;
+use App\Model\Projectm\Testmation;
 use Illuminate\Database\Eloquent\Model;
 
 class SamplingTime extends Model
 {
     protected $table = 'sampling_time';
 
-    public function project()
+    public function test()
     {
-        return $this->hasOne(Projectinfo::class, 'id','project_id');
+        return $this->hasOne(Testmation::class, 'id','test_id');
     }
 }

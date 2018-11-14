@@ -91,7 +91,7 @@ class DoseTimeController extends Controller
 
             $grid->id('编号')->sortable();
 
-            $grid->column('project.project_name','项目名称');
+            $grid->column('test.shiyan_name','项目名称');
             $grid->cycle('周期号')->using([1=>'一',2=>'二',3=>'三',4=>'四']);
             $grid->dose_num('给药序号');
             $grid->relative_day('相对天数');
@@ -116,8 +116,8 @@ class DoseTimeController extends Controller
 
         $show->id('ID')->sortable();
 
-        $show->project('项目名称',function ($project){
-            $project->project_name('项目名称');
+        $show->test('项目名称',function ($test){
+            $test->shiyan_name('项目名称');
         });
         $show->cycle('周期号')->using([1=>'一',2=>'二',3=>'三',4=>'四']);
         $show->dose_num('给药序号');
@@ -145,8 +145,8 @@ class DoseTimeController extends Controller
 
             $form->display('id', 'ID');
 
-            $form->select('project_id','项目名称')
-                ->options('/admin/api/projectName');
+            $form->select('test_id','项目名称')
+                ->options('/admin/api/gettestName');
             $form->select('cycle','周期号')->options([1=>'一',2=>'二',3=>'三',4=>'四']);
             $form->number('dose_num','给药序号');
             $form->number('relative_day','相对天数');

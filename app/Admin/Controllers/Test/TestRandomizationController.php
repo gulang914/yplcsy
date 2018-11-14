@@ -94,7 +94,7 @@ class TestRandomizationController extends Controller
             $grid->serial_number('入组顺序号');
             $grid->random_number('随机号');
             $grid->group_name('分组名称');
-            $grid->column('project.project_name','项目名称');
+            $grid->column('test.shiyan_name','项目名称');
 
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
@@ -116,8 +116,8 @@ class TestRandomizationController extends Controller
         $show->serial_number('入组顺序号');
         $show->random_number('随机号');
         $show->group_name('分组名称');
-        $show->project('项目名称', function($project){
-            $project->project_name();
+        $show->test('项目名称', function($test){
+            $test->shiyan_name();
         });
 
         $show->created_at('Created as','创建时间');
@@ -140,80 +140,12 @@ class TestRandomizationController extends Controller
             $form->text('serial_number','入组顺序号');
             $form->text('random_number','随机号');
             $form->text('group_name','分组名称');
-            $form->select('project_id','项目名称')
-                ->options('/admin/api/projectName');
+            $form->select('test_id','项目名称')
+                ->options('/admin/api/gettestName');
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
 
         });
     }
 
-    /**
-     * 获取表字段信息.
-     *
-     * @return array
-     */
-    protected function getTableColumn()
-    {
-       return Schema::getColumnListing($this->tableName);
-    }
-
-    /**
-     * 获取所有字段中文名称.
-     *
-     * @return array
-     */
-    protected function getFieldsZHName()
-    {
-        $FieldsZHName = Database::select('field_name')->where('table_name', $this->tableName)->first()->toArray();
-        $res = explode(',',array_pop($FieldsZHName));
-        $arr = [];
-        foreach ($res as $k=>$v){
-            foreach (explode('::',$v) as $kk=>$vv){
-                $arr[explode('::',$v)[0]] = explode('::',$v)[1];
-                break;
-            }
-        }
-        return $arr;
-    }
-
-    /**
-     * 获取所有字段显示类型.
-     *
-     * @return array
-     */
-    protected function getFieldsShowType()
-    {
-        $FieldShowType = Database::select('field_type')->where('table_name', $this->tableName)->first()->toArray();
-        $res = explode(',',array_pop($FieldShowType));
-        $arr = [];
-        foreach ($res as $k=>$v){
-            foreach (explode('::',$v) as $kk=>$vv){
-                $arr[explode('::',$v)[0]] = explode('::',$v)[1];
-                break;
-            }
-        }
-        return $arr;
-    }
-
-    /**
-     *  获取单个字段显示类型
-     *  @return string
-     */
-    protected function getFieldShowType($column,$type)
-    {
-        if($type[$column] == '标准字符串'){
-            return 'text';
-        }else if($type[$column] == '整数'){
-            return 'number';
-        }else if($type[$column] == '文本'){
-            return 'textarea';
-        }else if($type[$column] == '时间日期'){
-            return 'datetime';
-        }else if($type[$column] == '日期'){
-            return 'date';
-        }else if($type[$column] == '时间'){
-            return 'time';
-        }
-    }
 }
